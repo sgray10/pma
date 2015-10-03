@@ -1,7 +1,7 @@
 ## Chapter 01: Basic Static Techniques
 
-- [Notes](notes.md)
-- [Lab Answers](lab.md)
+- **[Notes](notes.md)**
+- **[Lab Answers](lab.md)**
 - **Detailed Contents:**
   - Antivirus Scanning: A Useful First Step
   - Hashing: A Fingerprint for Malware
