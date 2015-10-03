@@ -8,28 +8,33 @@
 
 ## Progress
 
-- [x] Chapter 01: Basic Static Techniques
-- [ ] Chapter 02: Malware Analysis in Virtual Machines
-- [ ] Chapter 03: Basic Dynamic Analysis
-- [ ] Chapter 04: A Crash Course in x86 Disassembly
-- [ ] Chapter 05: IDA Pro
-- [ ] Chapter 06: Recognizing C Code Constructs in Assembly
-- [ ] Chapter 07: Analyzing Malicious Windows Programs
-- [ ] Chapter 08: Debugging
-- [ ] Chapter 09: OllyDbg
-- [ ] Chapter 10: Kernel Debugging with WinDbg
-- [ ] Chapter 11: Malware Behavior
-- [ ] Chapter 12: Covert Malware Launching
-- [ ] Chapter 13: Data Encoding
-- [ ] Chapter 14: Malware-Focused Network Signatures
-- [ ] Chapter 15: Anti-Disassembly
-- [ ] Chapter 16: Anti-Debugging
-- [ ] Chapter 17: Anti-Virtual Machine Techniques
-- [ ] Chapter 18: Packers and Unpacking
-- [ ] Chapter 19: Shellcode Analysis
-- [ ] Chapter 20: C++ Analysis
-- [ ] Chapter 21: 64-Bit Malware
-
+- **Part 1: Basic Analysis**
+  - [ ] Chapter 01: Basic Static Techniques
+  - [ ] Chapter 02: Malware Analysis in Virtual Machines
+  - [ ] Chapter 03: Basic Dynamic Analysis
+- **Part 2: Advanced Static Analysis**
+  - [ ] Chapter 04: A Crash Course in x86 Disassembly
+  - [ ] Chapter 05: IDA Pro
+  - [ ] Chapter 06: Recognizing C Code Constructs in Assembly
+  - [ ] Chapter 07: Analyzing Malicious Windows Programs
+- **Part 3: Advanced Dynamic Analysis**
+  - [ ] Chapter 08: Debugging
+  - [ ] Chapter 09: OllyDbg
+  - [ ] Chapter 10: Kernel Debugging with WinDbg
+- **Part 4: Malware Functionality**
+  - [ ] Chapter 11: Malware Behavior
+  - [ ] Chapter 12: Covert Malware Launching
+  - [ ] Chapter 13: Data Encoding
+  - [ ] Chapter 14: Malware-Focused Network Signatures
+- **Part 5: Anti-Reverse-Engineering**
+  - [ ] Chapter 15: Anti-Disassembly
+  - [ ] Chapter 16: Anti-Debugging
+  - [ ] Chapter 17: Anti-Virtual Machine Techniques
+  - [ ] Chapter 18: Packers and Unpacking
+- **Part 6: Special Topics**
+  - [ ] Chapter 19: Shellcode Analysis
+  - [ ] Chapter 20: C++ Analysis
+  - [ ] Chapter 21: 64-Bit Malware
 
 - ## Additional Resources
   - [Running the Gauntlet: Author's website](http://practicalmalwareanalysis.com/)
