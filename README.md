@@ -1,5 +1,5 @@
 # Practical Malware Analysis
-![Practical Malware Analysis cover](./Images/practical_malware_analysis_cover.png =250x)
+![Practical Malware Analysis cover](./Images/practical_malware_analysis_cover.png)
 ##### Authors: Michael Sikorski and Andrew Honig
 ##### Publisher: [No Starch Press](https://www.nostarch.com/)
 ##### Publish Date: February 2012, 800 pp.
@@ -8,7 +8,7 @@
 
 ## Progress
 
-- [ ] Chapter 01: Basic Static Techniques
+- [x] Chapter 01: Basic Static Techniques
 - [ ] Chapter 02: Malware Analysis in Virtual Machines
 - [ ] Chapter 03: Basic Dynamic Analysis
 - [ ] Chapter 04: A Crash Course in x86 Disassembly
