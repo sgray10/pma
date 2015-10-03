@@ -2,7 +2,7 @@
 
 - [Notes](notes.md)
 - [Lab Answers](lab.md)
-- ** Detailed Contents:**
+- **Detailed Contents:**
   - Antivirus Scanning: A Useful First Step
   - Hashing: A Fingerprint for Malware
   - Finding Strings
