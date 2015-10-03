@@ -2,13 +2,13 @@
 
 ## Useful Programs
 - **PEid**
-  - http://www.peid.info/
+  - http://www.softpedia.com/get/Programming/Packers-Crypters-Protectors/PEiD-updated.shtml
   - Free static analysis tool used for packer and compiler detection
   - Development and support for PEiD has been discontinued since April 2011.
   - Still the best tool available for packer and compiler detection.
 
 - **PEview**
-  - http://www.magma.ca/~wjr/
+  - http://wjradburn.com/software/
   - View the PE headers, individual sections, and the import/export tables.
   
 - **Dependency Walker**
@@ -91,15 +91,23 @@
 | Wininet.dll   | Contains higher-level networking functions that implement protocols such as FTP, HTTP, and NTP.               |
 
 
-## Function Naming Conventions- Function names with an Ex suffix
+## Function Naming Conventions
+- Function names with an Ex suffix
   - When Microsoft updates a function and the new function is incompatible with the old one, Microsoft continues to support the old function.
-  - The new function is given the same name as the old function, with an added Ex suffix.  - Functions that have been significantly updated twice have two Ex suffixes in their names.  - Example: `CreateWindowEx`
+  - The new function is given the same name as the old function, with an added Ex suffix.
+  - Functions that have been significantly updated twice have two Ex suffixes in their names.
+  - Example: `CreateWindowEx`
   
-- Functions ending in A or W  - Indicates that the function accepts a string parameter and that there are two different versions of the function.
+- Functions ending in A or W
+  - Indicates that the function accepts a string parameter and that there are two different versions of the function.
   - A indicates the function accepts ASCII strings.
   - W indicates the function accepts wide strings.
   - Remember to drop the trailing A or W when searching for the function in the Microsoft documentation.
-  - Example: `CreateDirectoryW`## PE File Headers and Sections| Section       | Description                                                                  |
+  - Example: `CreateDirectoryW`
+
+
+## PE File Headers and Sections
+| Section       | Description                                                                  |
 |---------------|------------------------------------------------------------------------------|
 | .text         | Contains the executable code                                                 |
 | .rdata        | Holds read-only data that is globally accessible within the program          |
