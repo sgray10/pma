@@ -1,10 +1,10 @@
 # Practical Malware Analysis
 ![Practical Malware Analysis cover](./Images/practical_malware_analysis_cover.png)
 ##### Authors: Michael Sikorski and Andrew Honig
-##### Publisher: [No Starch Press](https://www.nostarch.com/)
+##### Publisher: [No Starch Press](https://www.nostarch.com/malware)
 ##### Publish Date: February 2012, 800 pp.
 ##### ISBN: 978-1-59327-290-6
-##### Purchase: [Amazon](www.amazon.com/dp/1593272901/)
+##### Purchase: [Amazon](https://www.amazon.com/dp/1593272901/)
 
 ## Progress
 
@@ -29,6 +29,7 @@
 - [ ] Chapter 19: Shellcode Analysis
 - [ ] Chapter 20: C++ Analysis
 - [ ] Chapter 21: 64-Bit Malware
+
 
 - ## Additional Resources
   - [Running the Gauntlet: Author's website](http://practicalmalwareanalysis.com/)
