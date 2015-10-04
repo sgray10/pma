@@ -31,9 +31,6 @@ Lab01-01.dll: Compilation timestamp 2010-12-19 16:16:38
 **3. Are there any indications that either of these files is packed or obfuscated? If so, what are these indicators?**
 
 ```
-TODO
-
-
 Lab01-01.exe
 ------------
 Name    Virtual address    Virtual size    Raw size   Entropy     MD5 
@@ -41,8 +38,12 @@ Name    Virtual address    Virtual size    Raw size   Entropy     MD5
 .rdata   8192              690             4096       1.13        2de0f3a50219cb3d0dc891c4fbf6f02a 
 .data    12288             252             4096       0.44        f5e2ba1465f131f57b0629e96bbe107e 
 
-Packers identified: PEiD Armadillo v1.71 
+The PE sections of the file do not immediately suggest that a packer was used.
 
+VirusTotal Packers identified:
+  1) Armadillo v1.71 
+
+--------------------------------------------------------------------------------------------------
 
 Lab01-01.dll
 ------------
@@ -52,61 +53,95 @@ Name    Virtual address    Virtual size    Raw size   Entropy     MD5
 .data   155648             108             4096       0.11        0211086333be22ae2620b568fde46fe3 
 .reloc  159744             516             4096       0.26        a082f3572d17cd40272b3bcfd96b7b2d 
 
-Packers identified: PEiD Armadillo v1.xx - v2.xx 
+The PE sections of the file do not immediately suggest that a packer was used.
+
+VirusTotal Packers identified:
+  1) Armadillo v1.xx - v2.xx 
 ```
 
 **4. Do any imports hint at what this malware does? If so, which imports are they?**
-```TODO
-
+```
 Lab01-01.exe 
 ------------
-[+] KERNEL32.dll            [+] MSVCRT.dll
-    MapViewOfFile               _except_handler3
-    UnmapViewOfFile             __p__fmode
-    FindFirstFileA              malloc
-    FindNextFileA               _adjust_fdiv
-    FindClose                   __setusermatherr
-    CopyFileA                   __p__commode
-    CloseHandle                 __p___initenv
-    CreateFileMappingA          _controlfp
-    CreateFileA                 exit
-    IsBadReadPtr                _XcptFilter
-                                __getmainargs
-                                _exit
-                                _stricmp
-                                _initterm
-                                __set_app_type
-                                     
+[+] KERNEL32.dll
+    MapViewOfFile        --,
+    UnmapViewOfFile        |
+    FindFirstFileA         |
+    FindNextFileA          |
+    FindClose              +---> These functions indicate access to the filesystem.
+    CopyFileA              |
+    CloseHandle            |
+    CreateFileMappingA   --'
+    CreateFileA
+    IsBadReadPtr
+                       
+[+] MSVCRT.dll
+    _except_handler3
+    __p__fmode
+    malloc
+    _adjust_fdiv
+    __setusermatherr
+    __p__commode
+    __p___initenv
+    _controlfp
+    exit
+    _XcptFilter
+    __getmainargs
+    _exit
+    _stricmp
+    _initterm
+    __set_app_type
+
+--------------------------------------------------------------------------------------------------
 
 Lab01-01.dll 
 ------------
-[+] KERNEL32.dll            [+] MSVCRT.dll             [+] WS2_32.dll
-    OpenMutexA                  strncmp                    socket
-    CreateMutexA                _initterm                  closesocket
-    Sleep                       _adjust_fdiv               inet_addr
-    CloseHandle                 malloc                     send
-    CreateProcessA              free                       WSACleanup
-                                                           WSAStartup
-                                                           connect
-                                                           shutdown
-                                                           htons
-                                                           recv
+[+] KERNEL32.dll
+    OpenMutexA
+    CreateMutexA
+    Sleep
+    CloseHandle
+    CreateProcessA    ---> This indicates the malware will spawn additional processes.
 
+[+] WS2_32.dll        ---> The use of this .dll indicates the malware will talk over the network
+    socket
+    closesocket
+    inet_addr
+    send
+    WSACleanup
+    WSAStartup
+    connect
+    shutdown
+    htons
+    recv
 
-```**5. Are there any other files or host-based indicators that you could look for on infected systems?**
+[+] MSVCRT.dll
+    strncmp
+    _initterm
+    _adjust_fdiv
+    malloc
+    free
+```
+**5. Are there any other files or host-based indicators that you could look for on infected systems?**
 
 ```
-TODO
+The exe's .data section contains a reference to "kerne132.dll"
+I am assuming this is an attempt to disguise their dll as "kernel32.dll"
+
+The presence of "kerne132.dll" could indicate a system's compromise.
 ```
 **6. What network-based indicators could be used to find this malware on infected machines?**
 
 ```
-TODO
+The dll's .data section contains a reference to "127.26.152.13"
+
+Any network traffic being sent to or received from this ip address should be investigated, if not blocked. 
 ```
 **7. What would you guess is the purpose of these files?**
 ```
 The malware seems to copy files and uses network functionality.
-I would guess that the malware copies files and sends them to the attacker's machine. ```
+I would guess that the malware copies targeted files and sends them to a remote server.
+Maybe spawnning additional processes for persistence.```
 
 ---
 ## Lab 1-2Analyze the file Lab01-02.exe.
@@ -145,37 +180,83 @@ ViRobot                 Trojan.Win32.S.StartPage.3072[h]              20151003
 Zillya                  Trojan.Agent.Win32.549706                     20151003  
 nProtect                Trojan/W32.Agent.3072.PM                      20151002  
 ```**2. Are there any indications that this file is packed or obfuscated? If so, what are these indicators? If the file is packed, unpack it if possible.**```
-TODO
-
 Name    Virtual address    Virtual size    Raw size   Entropy     MD5 
 UPX0    4096               16384           0          0.00        d41d8cd98f00b204e9800998ecf8427e 
 UPX1    20480              4096            1536       7.07        ad0f236c2b34f1031486c8cc4803a908 
 UPX2    24576              4096            512        2.80        f998d25f473e69cc89bf43af3102beea 
 
-Packers identified: F-PROT UPX 
+Looking at the PE sections, we can see the following indicators:
+  1) The names of the sections are not the normal .text, .data, etc
+  2) The virtual size of the sections in memory are much larger than the raw size stored on disk.
+
+These clues indicate that a packer was used in this executable.
+
+VirusTotal Packers identified:
+  1) UPX 
 ```**3. Do any imports hint at this program’s functionality? If so, which imports are they and what do they tell you?**```
-TODO
-
-
+Packed:
+-------
 [+] ADVAPI32.dll
-    CreateServiceA
+    CreateServiceA ---> Indicates the malware creates a service, possibly for persistence.
 
 [+] KERNEL32.DLL
     VirtualFree
     ExitProcess
     VirtualProtect
-    LoadLibraryA
+    LoadLibraryA   ----> Indicates that the malware will load .dll not listed in the PE headers.
     VirtualAlloc
     GetProcAddress
 
 [+] MSVCRT.dll
     exit
 
-[+] WININET.dll
+[+] WININET.dll    ---> The use of this .dll indicates the malware will talk over the network
     InternetOpenA
+    
+--------------------------------------------------------------------------------------------------
+    
+Unpacked:
+---------    
+[+] ADVAPI32.dll
+    CreateServiceA ----------------,              
+    StartServiceCtrlDispatcherA  --'--> Indicates the malware creates a service, probably for persistence.
+    OpenSCManagerA
+
+[+] KERNEL32.DLL
+    SystemTimeToFileTime
+    GetModuleFileNameA
+    CreateWaitableTimerA
+    ExitProcess
+    OpenMutexA
+    SetWaitableTimer
+    WaitForSingleObject
+    CreateMutexA
+    CreateThread
+
+[+] MSVCRT.dll
+    _exit
+    _XcptFilter
+    exit
+    __p___initenv
+    __getmainargs
+    _initterm
+    __setusermatherr
+    _adjust_fdiv
+    __p__commode
+    __p__fmode
+    __set_app_type
+    _except_handler3
+    _controlfp
+
+[+] WININET.dll    ---> The use of this .dll indicates the malware will talk over the network
+    InternetOpenA
+    InternetOpenUrlA
+
 ```**4. What host or network-based indicators could be used to identify this malware on infected machines?**
 ```
-TODO
+We see references to the following strings in the unpacked executable's .data:
+    1) "MalService" - Could be flagged as a malicious service for a host-based indicator.
+    2) "http://www.malwareanalysisbook.com" - Malicious URL for a network-based indicator
 ```
 ## Lab 1-3Analyze the file Lab01-03.exe.### Questions**1. Upload the Lab01-03.exe file to http://www.VirusTotal.com/. Does it match any existing antivirus definitions?**```
 Antivirus               Result                                        Update
@@ -225,27 +306,30 @@ ViRobot                 Trojan.Win32.A.Genome.4752[h]                 20151003
 Zillya                  Trojan.Genome.Win32.112441                    20151003
 nProtect                Trojan/W32.Small.4752.C                       20151002
 ```**2. Are there any indications that this file is packed or obfuscated? If so, what are these indicators? If the file is packed, unpack it if possible.**```
-TODO
-
 Name    Virtual address    Virtual size    Raw size   Entropy     MD5 
 t       4096               12288           0          0.00        d41d8cd98f00b204e9800998ecf8427e       
 ta      16384              4096            652        7.36        dcbb3117347a183b93cc9e50e09abd92       
 a       20480              4096            512        4.51        83d2bc9613dfc4bc5c714214023f386f 
 
+Looking at the PE sections, we can see the following indicators:
+  1) The names of the sections are not the normal .text, .data, etc
+  2) The virtual size of the sections in memory are much larger than the raw size stored on disk.
 
-Packers identified
-Command     FSG 
-F-PROT      FSG 
-PEiD        FSG v1.00 (Eng) -> dulek/xt 
+These clues indicate that a packer was used in this executable.
+
+VirusTotal Packers identified:
+  1) FSG 
+  2) FSG 
+  3) FSG v1.00 (Eng) -> dulek/xt 
 
 ```**3. Do any imports hint at this program’s functionality? If so, which imports are they and what do they tell you?**```
-TODO
-
-[+] KERNEL32.dll
-    LoadLibraryA
-    GetProcAddress
-```**4. What host- or network-based indicators could be used to identify this malware on infected machines?**```
-TODO
+[+] KERNEL32.dll -----,
+    LoadLibraryA      +-> The lack of .dll in the PE headers paired with the LoadLibrary call strongly indicate
+    GetProcAddress ---'   that that the malware will dynamically load it's functionality at runtime. Unfortunately, 
+                          this could be anything and we can't know without unpacking.
+```**4. What host- or network-based indicators could be used to identify this malware on infected machines?**```Packer identified as "FSG 1.0 -> dulek/xt"
+Attempts to unpack this one prove much more difficult than UPX.
+Unfortunately, without unpacking this executable, I cannot determine any indicators.
 ```## Lab 1-4
 Analyze the file Lab01-04.exe.### Questions**1. Upload the Lab01-04.exe file to http://www.VirusTotal.com/. Does it match any existing antivirus definitions?**```
 Antivirus                   Result                                            Update  
@@ -294,23 +378,24 @@ McAfee-GW-Edition           BehavesLike.Win32.Downloader.nz                   20
 Ikarus                      Backdoor.Win32.SuspectCRC                         20151003  
 ESET-NOD32                  a variant of Win32/TrojanDownloader.Small         20151003  
 ```**2. Are there any indications that this file is packed or obfuscated? If so, what are these indicators? If the file is packed, unpack it if possible.**```
-TODO
-
-
 Name    Virtual address    Virtual size    Raw size   Entropy     MD5 
 .text   4096               1824            4096       3.12        77df9f7ebc4a2bc4bdf2b454d7635aee              
 .rdata  8192               978             4096       1.59        d630e1eb49ed821e38202aefef911a39              
 .data   12288              332             4096       0.51        d9a3822a7733a76776d8b6e64e364b9d              
 .rsrc   16384              16480           20480      0.71        398569177d4d82090d3e1747be560f9a
 
-Packers identified: PEiD Armadillo v1.71  
+The PE sections of the file do not immediately suggest that a packer was used.
+
+VirusTotal Packers identified:
+  1) Armadillo v1.71  
 ```**3. When was this program compiled?**```
 Compilation timestamp 2019-08-30 22:26:59
-```**4. Do any imports hint at this program’s functionality? If so, which imports are they and what do they tell you?**```
-TODO
+```**4. Do any imports hint at this program’s functionality? If so, which imports are they and what do they tell you?**```    
+Main Binary:
+------------
 
 [+] ADVAPI32.dll
-    AdjustTokenPrivileges
+    AdjustTokenPrivileges ----> Indicates privileges are modified somehow.
     LookupPrivilegeValueA
     OpenProcessToken
 
@@ -319,18 +404,23 @@ TODO
     MoveFileA
     GetTempPathA
     SizeofResource
-    LoadResource
+    LoadResource -------------> Loads data from the resource section of the executable.
     GetModuleHandleA
-    OpenProcess
+    OpenProcess --------------> Creates new processes.
     GetWindowsDirectoryA
-    WriteFile
+    WriteFile ----------------> Modifies files.
     GetCurrentProcess
     CloseHandle
-    CreateFileA
+    CreateFileA --------------> Creates new files.
     GetProcAddress
     FindResourceA
-    LoadLibraryA
-    WinExec
+    LoadLibraryA -------------> Loads libraries dynamically.
+    WinExec ------------------> Executes commands.
+
+--------------------------------------------------------------------------------------------------
+    
+Resource Binary:
+----------------
 
 [+] MSVCRT.dll
     _except_handler3
@@ -348,8 +438,43 @@ TODO
     _stricmp
     _initterm
     __set_app_type
+    
+[+] KERNEL32.dll
+    GetWindowsDirectoryA
+    GetTempPathA
+    WinExec ------------------> Executes commands.
+
+[+] MSVCRT.dll
+    _except_handler3
+    __p__fmode
+    _initterm
+    _adjust_fdiv
+    __setusermatherr
+    __p__commode
+    __p___initenv
+    exit
+    _XcptFilter
+    __getmainargs
+    _snprintf
+    _controlfp
+    _exit
+    __set_app_type
+
+[+] urlmon.dll
+    URLDownloadToFileA -------> Indicates network communication    
 ```**5. What host or network-based indicators could be used to identify this malware on infected machines?**```
-TODO
-```**6. This file has one resource in the resource section. Use Resource Hacker to examine that resource, and then use it to extract the resource. What can you learn from the resource?**```
-TODO
+The following filenames are found in the .data section. I am unaware which of these are system
+files and which are filenames designed to look like system files.
+
+Based on the imports of this file, a signature can be made to detemine which of these files are
+created or modified after running the binary:
+    1) "winlogon.exe"
+    2) "sfc_os.dll"
+    3) "system32\wupdmgrd.exe"
+    4) "winup.exe"
+```**6. This file has one resource in the resource section. Use Resource Hacker to examine that resource, and then use it to extract the resource. What can you learn from the resource?**```
+The resource is a whole different binary. 
+
+We see references to the following strings in the executable found in the resource:
+    1) "http://www.practicalmalwareanalysis.com/updater.exe" - Malicious URL for a network-based indicator
 ```
