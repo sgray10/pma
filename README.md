@@ -9,7 +9,7 @@
 ## Progress
 
 - **Part 1: Basic Analysis**
-  - [ ] [Chapter 01: Basic Static Techniques](Chapters/Chapter 01/README.md)
+  - [X] [Chapter 01: Basic Static Techniques](Chapters/Chapter 01/README.md)
   - [ ] [Chapter 02: Malware Analysis in Virtual Machines](Chapters/Chapter 02/README.md)
   - [ ] [Chapter 03: Basic Dynamic Analysis](Chapters/Chapter 03/README.md)
 - **Part 2: Advanced Static Analysis**
