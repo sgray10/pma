@@ -1,7 +1,7 @@
 ## Chapter 02: Basic Static Techniques
 
 - **[Notes](notes.md)**
-- ** Lab Answers (No Chapter 2 Labs) **
+- **Lab Answers (No Chapter 2 Labs)**
 - **Detailed Contents:**
   - The Structure of a Virtual Machine
   - Creating Your Malware Analysis Machine

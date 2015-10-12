@@ -1,7 +1,7 @@
 ## Chapter 04: A Crash Course In x86 Disassembly
 
 - **[Notes](notes.md)**
-- ** Lab Answers (No Chapter 4 Labs) **
+- **Lab Answers (No Chapter 4 Labs)**
 - **Detailed Contents:**
   - Levels of Abstraction
   - Reverse-Engineering

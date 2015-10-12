@@ -1,7 +1,7 @@
 ## Chapter 08: Debugging
 
 - **[Notes](notes.md)**
-- ** Lab Answers (No Chapter 8 Labs) **
+- **Lab Answers (No Chapter 8 Labs)**
 - **Detailed Contents:**
   - Source-Level vs. Assembly-Level Debuggers
   - Kernel vs. User-Mode Debugging
