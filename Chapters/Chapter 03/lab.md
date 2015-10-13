@@ -13,6 +13,8 @@ Imports found with Dependency Walker:
 [+] KERNEL32.dll
     ExitProcess
 
+NOTE: The lack of imports suggest the executable is packed.
+
 
 Strings found in Process Monitor:
 --------------------------------
