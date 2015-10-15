@@ -87,6 +87,7 @@ www.practicalmalwareanalysis.com
 
 ---
 
+
 ## Lab 3-2
 
 Analyze the malware found in the file Lab03-02.dll using basic dynamic analysis tools.
@@ -201,12 +202,77 @@ Creation of the following registry keys:
 GET serve.html on host practicalmalwareanalysis.com
 ```
 
+---
 
 
+## Lab 3-3
+
+Execute the malware found in the file Lab03-03.exe while monitoring it using basic dynamic analysis tools in a safe environment.
+
+### Questions
+**1. What do you notice when monitoring this malware with Process Explorer?**
+
+```
+This program creates a process for a malicious svchost.exe
+```
 
 
+**2. Can you identify any live memory modifications?**
+
+```
+The svchost.exe is malicious as the version loaded in memory does not match the version stored on disk.
+```
 
 
+**3. What are the malware’s host-based indicators?**
+
+```
+A infected svchost running outside the context of winlogon.exe
+
+The presence of the file practicalmalwareanalysis.log indicated the machine is infected.
+```
 
 
+**4. What is the purpose of this program?**
 
+```
+Keylogger disguised as svchost.exe
+```
+
+---
+
+
+## Lab 3-4
+
+Analyze the malware found in the file Lab03-04.exe using basic dynamic analysis tools. (This program is analyzed further in the Chapter 9 labs.)
+
+### Questions
+***1. What happens when you run this file?***
+
+```
+After completion of running, the malware executes the following command:
+  "C:\WINDOWS\system32\cmd.exe" /c del C:\DOCUME~1\rot0xd\Labs\CHAPTE~2\Lab03-04.exe >> NUL
+
+We lost our malware sample!
+```
+
+
+***2. What is causing the roadblock in dynamic analysis?***
+
+```
+The output of strings on the malware indicates some kind of command line options.
+Maybe the malware has to run with the options. 
+```
+
+
+***3. Are there other ways to run this program?***
+
+```
+I tried running the malware with the following command line switches:
+  -cc
+  -c
+  -re
+  -in
+
+None of these worked.
+```
