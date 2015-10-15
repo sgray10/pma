@@ -85,5 +85,128 @@ a call is being made to the following URL:
 www.practicalmalwareanalysis.com
 ```
 
+---
+
+## Lab 3-2
+
+Analyze the malware found in the file Lab03-02.dll using basic dynamic analysis tools.
+
+### Questions
+**1. How can you get this malware to install itself?**
+
+```
+To run a DLL: 
+  C:\>rundll32.exe DLLname, EXPORT arguments
+
+The EXPORT value must be a function name or ordinal selected from the exported function table in the DLL
+You can use a tool such as PEview or PE Explorer to view the Export table.
+
+When we view the Export table of Lab03-02.dll, we see a install function.
+Because of this, we assume we can install by running:
+  C:\>rundll32.exe Lab03-02.dll install
+```
+
+**2. How would you get this malware to run after installation?**
+
+```
+The DLL registered a service:
+
+C:\>sc qc iprip
+[SC] GetServiceConfig SUCCESS
+
+SERVICE_NAME: iprip
+        TYPE               : 20  WIN32_SHARE_PROCESS
+        START_TYPE         : 2   AUTO_START
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : C:\WINDOWS\System32\svchost.exe -k netsvcs
+        LOAD_ORDER_GROUP   :
+        TAG                : 0
+        DISPLAY_NAME       : Intranet Network Awareness (INA+)
+        DEPENDENCIES       : RpcSs
+        SERVICE_START_NAME : LocalSystem
+
+Simply start the service to run the malware.
+```
+
+
+**3. How can you find the process under which this malware is running?**
+
+```
+We can see which svchost.exe has loaded the Lab03-02.dll file.
+```
+
+
+**4. Which filters could you set in order to use procmon to glean information?**
+
+```
+We can filter by the PID of the svchost.exe running the malicious DLL.
+```
+
+
+**5. What are the malware’s host-based indicators?**
+
+```
+Creation of the following services:
+  iprip
+
+Creation of the following registry keys:
+  HKLM\SYSTEM\ControlSet001\Enum\Root\LEGACY_IPRIP\0000\Control\*NewlyCreated*: 0x00000000
+  HKLM\SYSTEM\ControlSet001\Enum\Root\LEGACY_IPRIP\0000\Service: "IPRIP"
+  HKLM\SYSTEM\ControlSet001\Enum\Root\LEGACY_IPRIP\0000\Legacy: 0x00000001
+  HKLM\SYSTEM\ControlSet001\Enum\Root\LEGACY_IPRIP\0000\ConfigFlags: 0x00000000
+  HKLM\SYSTEM\ControlSet001\Enum\Root\LEGACY_IPRIP\0000\Class: "LegacyDriver"
+  HKLM\SYSTEM\ControlSet001\Enum\Root\LEGACY_IPRIP\0000\ClassGUID: "{8ECC055D-047F-11D1-A537-0000F8753ED1}"
+  HKLM\SYSTEM\ControlSet001\Enum\Root\LEGACY_IPRIP\0000\DeviceDesc: "Intranet Network Awareness (INA+)"
+  HKLM\SYSTEM\ControlSet001\Enum\Root\LEGACY_IPRIP\NextInstance: 0x00000001
+  HKLM\SYSTEM\ControlSet001\Services\IPRIP\Enum\0: "Root\LEGACY_IPRIP\0000"
+  HKLM\SYSTEM\ControlSet001\Services\IPRIP\Enum\Count: 0x00000001
+  HKLM\SYSTEM\ControlSet001\Services\IPRIP\Enum\NextInstance: 0x00000001
+  HKLM\SYSTEM\ControlSet001\Services\IPRIP\Security\Security: 01 00 14 80 90 00 00 00 9C 00 00 00 14 00 00 00 30 00 00 00 02 00 1C 00 01 00 00 00 02 80 14 00 FF 01 0F 00 01 01 00 00 00 00 00 01 00 00 00 00 02 00 60 00 04 00 00 00 00 00 14 00 FD 01 02 00 01 01 00 00 00 00 00 05 12 00 00 00 00 00 18 00 FF 01 0F 00 01 02 00 00 00 00 00 05 20 00 00 00 20 02 00 00 00 00 14 00 8D 01 02 00 01 01 00 00 00 00 00 05 0B 00 00 00 00 00 18 00 FD 01 02 00 01 02 00 00 00 00 00 05 20 00 00 00 23 02 00 00 01 01 00 00 00 00 00 05 12 00 00 00 01 01 00 00 00 00 00 05 12 00 00 00
+  HKLM\SYSTEM\ControlSet001\Services\IPRIP\Parameters\ServiceDll: "C:\Documents and Settings\rot0xd\Desktop\Labs\Chapter_3L\Lab03-02.dll"
+  HKLM\SYSTEM\ControlSet001\Services\IPRIP\Type: 0x00000020
+  HKLM\SYSTEM\ControlSet001\Services\IPRIP\Start: 0x00000002
+  HKLM\SYSTEM\ControlSet001\Services\IPRIP\ErrorControl: 0x00000001
+  HKLM\SYSTEM\ControlSet001\Services\IPRIP\ImagePath: "%SystemRoot%\System32\svchost.exe -k netsvcs"
+  HKLM\SYSTEM\ControlSet001\Services\IPRIP\DisplayName: "Intranet Network Awareness (INA+)"
+  HKLM\SYSTEM\ControlSet001\Services\IPRIP\ObjectName: "LocalSystem"
+  HKLM\SYSTEM\ControlSet001\Services\IPRIP\Description: "Depends INA+, Collects and stores network configuration and location information, and notifies applications when this information changes."
+  HKLM\SYSTEM\ControlSet001\Services\IPRIP\DependOnService: 'RpcSs'
+  HKLM\SYSTEM\CurrentControlSet\Enum\Root\LEGACY_IPRIP\0000\Control\*NewlyCreated*: 0x00000000
+  HKLM\SYSTEM\CurrentControlSet\Enum\Root\LEGACY_IPRIP\0000\Service: "IPRIP"
+  HKLM\SYSTEM\CurrentControlSet\Enum\Root\LEGACY_IPRIP\0000\Legacy: 0x00000001
+  HKLM\SYSTEM\CurrentControlSet\Enum\Root\LEGACY_IPRIP\0000\ConfigFlags: 0x00000000
+  HKLM\SYSTEM\CurrentControlSet\Enum\Root\LEGACY_IPRIP\0000\Class: "LegacyDriver"
+  HKLM\SYSTEM\CurrentControlSet\Enum\Root\LEGACY_IPRIP\0000\ClassGUID: "{8ECC055D-047F-11D1-A537-0000F8753ED1}"
+  HKLM\SYSTEM\CurrentControlSet\Enum\Root\LEGACY_IPRIP\0000\DeviceDesc: "Intranet Network Awareness (INA+)"
+  HKLM\SYSTEM\CurrentControlSet\Enum\Root\LEGACY_IPRIP\NextInstance: 0x00000001
+  HKLM\SYSTEM\CurrentControlSet\Services\IPRIP\Enum\0: "Root\LEGACY_IPRIP\0000"
+  HKLM\SYSTEM\CurrentControlSet\Services\IPRIP\Enum\Count: 0x00000001
+  HKLM\SYSTEM\CurrentControlSet\Services\IPRIP\Enum\NextInstance: 0x00000001
+  HKLM\SYSTEM\CurrentControlSet\Services\IPRIP\Security\Security: 01 00 14 80 90 00 00 00 9C 00 00 00 14 00 00 00 30 00 00 00 02 00 1C 00 01 00 00 00 02 80 14 00 FF 01 0F 00 01 01 00 00 00 00 00 01 00 00 00 00 02 00 60 00 04 00 00 00 00 00 14 00 FD 01 02 00 01 01 00 00 00 00 00 05 12 00 00 00 00 00 18 00 FF 01 0F 00 01 02 00 00 00 00 00 05 20 00 00 00 20 02 00 00 00 00 14 00 8D 01 02 00 01 01 00 00 00 00 00 05 0B 00 00 00 00 00 18 00 FD 01 02 00 01 02 00 00 00 00 00 05 20 00 00 00 23 02 00 00 01 01 00 00 00 00 00 05 12 00 00 00 01 01 00 00 00 00 00 05 12 00 00 00
+  HKLM\SYSTEM\CurrentControlSet\Services\IPRIP\Parameters\ServiceDll: "C:\Documents and Settings\rot0xd\Desktop\Labs\Chapter_3L\Lab03-02.dll"
+  HKLM\SYSTEM\CurrentControlSet\Services\IPRIP\Type: 0x00000020
+  HKLM\SYSTEM\CurrentControlSet\Services\IPRIP\Start: 0x00000002
+  HKLM\SYSTEM\CurrentControlSet\Services\IPRIP\ErrorControl: 0x00000001
+  HKLM\SYSTEM\CurrentControlSet\Services\IPRIP\ImagePath: "%SystemRoot%\System32\svchost.exe -k netsvcs"
+  HKLM\SYSTEM\CurrentControlSet\Services\IPRIP\DisplayName: "Intranet Network Awareness (INA+)"
+  HKLM\SYSTEM\CurrentControlSet\Services\IPRIP\ObjectName: "LocalSystem"
+  HKLM\SYSTEM\CurrentControlSet\Services\IPRIP\Description: "Depends INA+, Collects and stores network configuration and location information, and notifies applications when this information changes."
+  HKLM\SYSTEM\CurrentControlSet\Services\IPRIP\DependOnService: 'RpcSs'
+```
+
+
+**6. Are there any useful network-based signatures for this malware?**
+
+```
+GET serve.html on host practicalmalwareanalysis.com
+```
+
+
+
+
+
+
+
+
 
 
