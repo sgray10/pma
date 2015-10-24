@@ -37,6 +37,4 @@
   - [ ] [Chapter 21: 64-Bit Malware](Chapters/Chapter 21/README.md)
 
 ## Resources
-  - [Useful Programs/Tools](Resources/Tools)
-  - [Practical Malware Analysis Labs](Resources/Labs)
   - [Running the Gauntlet: Author's website](http://practicalmalwareanalysis.com/)
